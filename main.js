@@ -18,13 +18,16 @@ const getPosition = function ( elem ) {
 };
 
 const isElementInView = (element) => {
-    const transforms = new WebKitCSSMatrix(
-      window.getComputedStyle(element).webkitTransform
-    );
+  // console.log(element)
+  const compStyle = window.getComputedStyle(element);
+  if (compStyle) {
+    const transforms = new WebKitCSSMatrix(compStyle.webkitTransform);
     // const buffer = transforms.m42 < 0 ? transforms.m42 * -1 : transforms.m42;
     const buffer = transforms.m42 < 0 ? transforms.m42 : 0;
     const yPos = getPosition(element);
 		const topOfWindow = window.scrollY;
 		const bottomOfWindow = window.scrollY + window.innerHeight;
 		return bottomOfWindow > yPos + buffer && topOfWindow < yPos + element.clientHeight;
+  }
+  return false;
 }
